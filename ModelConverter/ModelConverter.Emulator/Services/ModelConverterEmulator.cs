@@ -12,22 +12,22 @@ namespace ModelConverter.Emulator.Services
 {
     public class ModelConverterEmulator : IModelConverter
     {
-        private IFileManager fileManager;
-        private ILogger<ModelConverterEmulator> logger;
+        private readonly IFileManager _fileManager;
+        private readonly ILogger<ModelConverterEmulator> _logger;
 
         public ModelConverterEmulator(IFileManager fileManager, ILogger<ModelConverterEmulator> logger)
         {
-            this.fileManager = fileManager;
-            this.logger = logger;
+            this._fileManager = fileManager;
+            this._logger = logger;
         }
 
         public async Task<FileInfo> Convert(string inputPath, TargetFormat targetFormat, string outputPath)
         {
-            var file = await fileManager.LoadFile(inputPath);
+            var file = await _fileManager.LoadFile(inputPath);
             if (file != null)
             {
                 await Convert(file);
-                var newFile = await fileManager.SaveFile(file, outputPath);
+                var newFile = await _fileManager.SaveFile(file, outputPath);
                 return newFile;
             }
             throw new Exception();
@@ -37,10 +37,10 @@ namespace ModelConverter.Emulator.Services
         {
             for (int i = 0; i < 10; i++)
             {
-                logger.LogInformation($"Converting process is running, {i * 10}% is done.");
+                _logger.LogInformation($"Converting process is running, {i * 10}% is done.");
                 await Task.Delay(200);
             }
-            logger.LogInformation($"Converting process is done.");
+            _logger.LogInformation($"Converting process is done.");
         }
     }
 }
