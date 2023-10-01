@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ModelConverter.Service;
 using ModelConverter.Service.Extensions;
+using ModelConverter.Service.Services;
+using ModelConverter.Service.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +24,9 @@ namespace ModelConverter.Service
             {
                 loggingBuilder.AddConsole();
             });
+            builder.Services.AddScoped<IConverterService, ConverterService>();
+            builder.Services.AddScoped<IRequestConverter, RequestConverter>();
+            builder.Services.AddScoped<IRequestValidator, RequestValidator>();
             builder.RegisterEmulator();
         }
     }

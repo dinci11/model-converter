@@ -5,6 +5,8 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using ModelConverter.Emulator.Interfaces;
 using ModelConverter.Service.Constants;
+using ModelConverter.Service.DTOs.Requestes;
+using ModelConverter.Service.DTOs.Responses;
 using ModelConverter.Service.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -18,19 +20,42 @@ namespace ModelConverter.Service.Functions
     public class ConverterFunction
     {
         private readonly IConverterService _converterService;
+        private readonly IRequestConverter _requestConverter;
+        private readonly IRequestValidator _requestValidator;
         private readonly ILogger<ConverterFunction> _logger;
 
-        public ConverterFunction(IConverterService converterService, ILogger<ConverterFunction> logger)
+        public ConverterFunction(IConverterService converterService,
+            ILogger<ConverterFunction> logger,
+            IRequestConverter requestConverter,
+            IRequestValidator requestValidator)
         {
-            this._converterService = converterService;
-            this._logger = logger;
+            _converterService = converterService;
+            _logger = logger;
+            _requestConverter = requestConverter;
+            _requestValidator = requestValidator;
         }
 
         [FunctionName("Convert")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, Constants.HttpMethods.POST, Route = Routes.CONVERTER)] HttpRequest request)
         {
-            return new OkObjectResult("Hello!");
+            try
+            {
+                var modelConverterRequest = _requestConverter.ConvertHttpRequest<ModelConvertingRequest>(request);
+
+                _requestValidator.ValidateRequest(modelConverterRequest);
+
+                var newFile = await _converterService.Convert3DModelToNewFormat(modelConverterRequest.InputPath, modelConverterRequest.TargetFormat, modelConverterRequest.OutputPath);
+
+                return new OkObjectResult(new ModelConvertingResponse(Enums.ProcessStatus.Finished, newFile.FullName));
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new ObjectResult(new ModelConvertingResponse(Enums.ProcessStatus.Failed, failingResult: ex.Message));
+                errorResponse.StatusCode = StatusCodes.Status422UnprocessableEntity;
+
+                return errorResponse;
+            }
         }
     }
 }

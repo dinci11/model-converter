@@ -3,7 +3,9 @@ using ModelConverter.Emulator.Interfaces;
 using ModelConverter.Service.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,9 +20,9 @@ namespace ModelConverter.Service.Services
             this._modelConverter = modelConverter;
         }
 
-        public async Task Convert3DModelToNewFormat(string inputPath, TargetFormat targetFormat, string outputPath)
+        public async Task<FileInfo> Convert3DModelToNewFormat(string inputPath, TargetFormat targetFormat, string outputPath)
         {
-            var newFile = await _modelConverter.Convert(inputPath, targetFormat, outputPath);
+            return await _modelConverter.Convert(inputPath, targetFormat, outputPath);
         }
     }
 }
