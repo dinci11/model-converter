@@ -15,10 +15,16 @@ namespace ModelConverter.Emulator.Services
             return fileInfo;
         }
 
-        public async Task<FileInfo> SaveFile(FileInfo fileInfo, string outputPath)
+        public async Task<FileInfo> SaveFile(FileInfo inputFile, FileInfo outputPath)
         {
-            File.Copy(fileInfo.FullName, outputPath, true);
-            return new FileInfo(outputPath);
+            if (PathNotExists(outputPath))
+            {
+                throw new Exception($"Directory {outputPath.Directory.FullName} not existing");
+            }
+            File.Copy(inputFile.FullName, outputPath.FullName, true);
+            return new FileInfo(outputPath.FullName);
         }
+
+        private bool PathNotExists(FileInfo path) => !path.Directory.Exists;
     }
 }

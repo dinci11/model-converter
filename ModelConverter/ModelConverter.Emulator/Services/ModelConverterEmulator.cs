@@ -27,7 +27,8 @@ namespace ModelConverter.Emulator.Services
             if (file != null)
             {
                 await Convert(file);
-                var newFile = await _fileManager.SaveFile(file, outputPath);
+                var outputFile = new FileInfo(Path.Combine(outputPath, $"new_{file.Name.Split('.')[0]}.{targetFormat.ToString().ToLower()}"));
+                var newFile = await _fileManager.SaveFile(file, outputFile);
                 return newFile;
             }
             throw new Exception();

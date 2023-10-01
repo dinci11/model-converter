@@ -10,6 +10,6 @@ namespace ModelConverter.Emulator.Interfaces
     {
         public Task<FileInfo> LoadFile(string inputPath);
 
-        public Task<FileInfo> SaveFile(FileInfo fileInfo, string outputPath);
+        public Task<FileInfo> SaveFile(FileInfo inputFile, FileInfo outputPath);
     }
 }
