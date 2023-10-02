@@ -3,10 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ModelConverter.TaskManager.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class DownloadController : ControllerBase
+    public class DownloadController : TaskManagerControllerBase
     {
+        public DownloadController(ILogger<UploadController> logger)
+            : base(logger)
+        {
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetDownloadUrl()
         {

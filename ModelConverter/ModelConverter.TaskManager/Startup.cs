@@ -1,4 +1,7 @@
-﻿namespace ModelConverter.TaskManager
+﻿using ModelConverter.TaskManager.Services;
+using ModelConverter.TaskManager.Services.Interfaces;
+
+namespace ModelConverter.TaskManager
 {
     public class Startup
     {
@@ -14,6 +17,9 @@
             services.AddLogging();
             services.AddControllers();
             services.AddEndpointsApiExplorer();
+            services.AddScoped<IProcessIdProvider, ProcessIdProvider>();
+            services.AddScoped<IFileManager, FileManager>();
+            services.AddScoped<IProcessManager, ProcessManager>();
         }
 
         public void Configure(IApplicationBuilder builder, IWebHostEnvironment environment)

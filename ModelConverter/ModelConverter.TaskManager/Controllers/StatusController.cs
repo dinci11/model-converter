@@ -3,10 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ModelConverter.TaskManager.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class StatusController : ControllerBase
+    public class StatusController : TaskManagerControllerBase
     {
+        public StatusController(ILogger<UploadController> logger)
+            : base(logger)
+        {
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetProcessStatus()
         {

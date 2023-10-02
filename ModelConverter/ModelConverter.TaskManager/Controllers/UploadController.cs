@@ -1,27 +1,58 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ModelConverter.TaskManager.DTOs;
+using ModelConverter.TaskManager.Services.Interfaces;
 
 namespace ModelConverter.TaskManager.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UploadController : Controller
+    public class UploadController : TaskManagerControllerBase
     {
-        private ILogger<UploadController> logger;
+        private readonly IFileManager _fileManager;
+        private readonly IProcessManager _processManager;
+        private readonly IProcessIdProvider _processIdProvider;
 
-        public UploadController(ILogger<UploadController> logger)
+        public UploadController(ILogger<UploadController> logger, IFileManager fileManager, IProcessManager processManager, IProcessIdProvider processIdProvider)
+            : base(logger)
         {
-            this.logger = logger;
+            _fileManager = fileManager;
+            _processManager = processManager;
+            _processIdProvider = processIdProvider;
         }
 
         [HttpPost]
         public async Task<IActionResult> UploadShaprFile()
         {
-            using (var reader = new StreamReader(Request.Body))
+            try
             {
-                var requestBody = await reader.ReadToEndAsync();
-                logger.LogInformation($"/Upload called with body: {requestBody}");
+                var request = GetRequestFromForm<UploadRequest>();
+                var file = GetFileFromRequest();
+
+                ValidateRequest(await request);
+
+                var inputFilePath = await _fileManager.SaveFile(await file);
+
+                await _processManager.StarConverting(inputFilePath);
+
+                var response = new UploadResponse
+                {
+                    ProcessId = _processIdProvider.ProcessId,
+                    ProcessStatusUrl = $"http://localhost:5000/api/Status/{_processIdProvider.ProcessId}"
+                };
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult("Hello!");
+            catch (Exception ex)
+            {
+                var response = new ObjectResult(ex.Message);
+                response.StatusCode = 500;
+                return response;
+            }
+        }
+
+        private void ValidateRequest(UploadRequest request)
+        {
+            if (request.targetFormat is null)
+            {
+                throw new Exception("targetFormat should be specified");
+            }
         }
     }
 }

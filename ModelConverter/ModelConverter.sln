@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelConverter.Emulator", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelConverter.Service", "ModelConverter.Service\ModelConverter.Service.csproj", "{FA56BE63-01D6-4AAD-BDAA-535EB2EB75D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelConverter.TaskManager", "ModelConverter.TaskManager\ModelConverter.TaskManager.csproj", "{92CA4771-25C6-477C-8055-60F084C64EAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelConverter.TaskManager", "ModelConverter.TaskManager\ModelConverter.TaskManager.csproj", "{92CA4771-25C6-477C-8055-60F084C64EAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
