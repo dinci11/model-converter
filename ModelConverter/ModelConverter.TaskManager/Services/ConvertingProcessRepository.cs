@@ -2,6 +2,7 @@
 using ModelConverter.TaskManager.Models;
 using ModelConverter.TaskManager.Services.Interfaces;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 
 namespace ModelConverter.TaskManager.Services
 {
@@ -25,14 +26,19 @@ namespace ModelConverter.TaskManager.Services
             });
         }
 
-        public ProcessStatus GetProcessStatus(string processId)
+        public async Task<ConvertingProcess> GetProcessAsync(string processId)
         {
-            var process = processPool[processId];
-            if (process == null)
+            var process = await Task.Run(() =>
             {
-                throw new Exception($"Process with id: {processId} not found");
+                return processPool.GetValueOrDefault(processId);
+            });
+
+            if (process is null)
+            {
+                throw new Exception($"There is no process with {processId}");
             }
-            return process.ProcessStatus;
+
+            return process;
         }
     }
 }

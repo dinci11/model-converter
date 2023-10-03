@@ -1,20 +1,57 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using ModelConverter.TaskManager.DTOs;
+using ModelConverter.TaskManager.Services.Interfaces;
 
 namespace ModelConverter.TaskManager.Controllers
 {
     public class StatusController : TaskManagerControllerBase
     {
-        public StatusController(ILogger<UploadController> logger)
+        private readonly IProcessManager _processManager;
+
+        public StatusController(ILogger<UploadController> logger, IProcessManager processManager)
             : base(logger)
         {
+            _processManager = processManager;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetProcessStatus()
         {
-            await Task.Delay(200);
-            return new OkObjectResult("Running");
+            try
+            {
+                var processId = GetProcessIdFromReuquestParam();
+
+                var processStatus = await _processManager.GetProcessStatus(processId);
+
+                return new OkObjectResult(new ProcessStatusResponse
+                {
+                    ProcessId = processId,
+                    ProcessStatus = processStatus
+                });
+            }
+            catch (Exception ex)
+            {
+                return new NotFoundObjectResult(ex.Message);
+            }
+        }
+
+        private string GetProcessIdFromReuquestParam()
+        {
+            var processId = Request.Query["processId"];
+
+            IsStringNotNullOrEmpty(processId);
+
+            return processId;
+        }
+
+        private void IsStringNotNullOrEmpty(StringValues processId)
+        {
+            if (string.IsNullOrEmpty(processId))
+            {
+                throw new Exception("ProcessId should be provided");
+            }
         }
     }
 }

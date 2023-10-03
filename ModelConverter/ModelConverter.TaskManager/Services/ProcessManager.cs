@@ -19,6 +19,12 @@ namespace ModelConverter.TaskManager.Services
             _repository = repository;
         }
 
+        public async Task<ProcessStatus> GetProcessStatus(string processId)
+        {
+            var process = await _repository.GetProcessAsync(processId);
+            return process.ProcessStatus;
+        }
+
         public async Task StarConverting(string processId, string inputFilePath, TargetFormat targetFormat)
         {
             var process = new ConvertingProcess(processId, inputFilePath, FileConstants.Directories.CONVERTED_FILE_DIRECTORY, targetFormat);
