@@ -1,5 +1,4 @@
 ﻿using ModelConverter.Service.Constants;
-using ModelConverter.Service.DTOs.Requestes;
 using ModelConverter.Service.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -7,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ModelConverter.Common.DTOs.Requestes;
 
 namespace ModelConverter.Service.Services
 {

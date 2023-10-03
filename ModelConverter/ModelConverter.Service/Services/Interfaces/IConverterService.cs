@@ -1,4 +1,5 @@
-﻿using ModelConverter.Common.Enums;
+﻿using ModelConverter.Common.DTOs.Requestes;
+using ModelConverter.Common.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,6 +11,6 @@ namespace ModelConverter.Service.Services.Interfaces
 {
     public interface IConverterService
     {
-        Task<FileInfo> Convert3DModelToNewFormat(string inputPath, TargetFormat targetFormat, string outputPath);
+        Task Convert3DModelToNewFormatAsync(ModelConvertingRequest modelConvertingRequest);
     }
 }

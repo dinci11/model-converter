@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using ModelConverter.Common.DTOs.Responses;
 using ModelConverter.Common.Enums;
 using ModelConverter.Emulator.Interfaces;
 using ModelConverter.Service.Constants;
-using ModelConverter.Service.DTOs.Requestes;
-using ModelConverter.Service.DTOs.Responses;
 using ModelConverter.Service.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,25 +14,30 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ModelConverter.Common.DTOs.Requestes;
+using ModelConverter.Common.Services.Interfaces;
 
 namespace ModelConverter.Service.Functions
 {
     public class ConverterFunction
     {
         private readonly IConverterService _converterService;
+        private readonly ILogger<ConverterFunction> _logger;
         private readonly IRequestConverter _requestConverter;
         private readonly IRequestValidator _requestValidator;
-        private readonly ILogger<ConverterFunction> _logger;
+        private readonly IExceptionHandler _exceptionHandler;
 
         public ConverterFunction(IConverterService converterService,
             ILogger<ConverterFunction> logger,
             IRequestConverter requestConverter,
-            IRequestValidator requestValidator)
+            IRequestValidator requestValidator,
+            IExceptionHandler exceptionHandler)
         {
             _converterService = converterService;
             _logger = logger;
             _requestConverter = requestConverter;
             _requestValidator = requestValidator;
+            _exceptionHandler = exceptionHandler;
         }
 
         [FunctionName("Convert")]
@@ -46,16 +50,17 @@ namespace ModelConverter.Service.Functions
 
                 _requestValidator.ValidateRequest(modelConverterRequest);
 
-                var newFile = await _converterService.Convert3DModelToNewFormat(modelConverterRequest.InputPath, modelConverterRequest.TargetFormat, modelConverterRequest.OutputPath);
+                _ = _converterService.Convert3DModelToNewFormatAsync(modelConverterRequest);
 
-                return new OkObjectResult(new ModelConvertingResponse(ProcessStatus.Completed, newFile.FullName));
+                return new OkObjectResult(new ModelConvertingResponse
+                {
+                    ProcessId = modelConverterRequest.ProcessId,
+                    ProcessStartResult = ProcessStartResult.Started
+                });
             }
             catch (Exception ex)
             {
-                var errorResponse = new ObjectResult(new ModelConvertingResponse(ProcessStatus.Failed, failingResult: ex.Message));
-                errorResponse.StatusCode = StatusCodes.Status422UnprocessableEntity;
-
-                return errorResponse;
+                return await _exceptionHandler.HandleException(ex);
             }
         }
     }

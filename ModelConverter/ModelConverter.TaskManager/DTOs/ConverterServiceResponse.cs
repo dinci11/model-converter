@@ -6,7 +6,7 @@ namespace ModelConverter.TaskManager.DTOs
     {
         public string OutputFilePath { get; private set; }
 
-        public ProcessResult ProcessResult { get; private set; }
+        public ProcessStartResult ProcessResult { get; private set; }
 
         public string FailingResult { get; private set; }
     }

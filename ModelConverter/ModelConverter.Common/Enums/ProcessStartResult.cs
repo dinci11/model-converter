@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace ModelConverter.Common.Enums
 {
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum ProcessResult
+    public enum ProcessStartResult
     {
-        Success,
+        Started,
         Failed
     }
 }

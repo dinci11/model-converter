@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ModelConverter.Service.Services.Interfaces
+namespace ModelConverter.Common.Services.Interfaces
 {
-    public interface IRequestValidator
+    public interface IHttpService
     {
-        bool ValidateRequest(ModelConvertingRequest request);
+        Task<HttpResponseMessage> PutAsync(string url, ProcessRequestBase request);
     }
 }

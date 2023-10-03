@@ -37,6 +37,12 @@ namespace ModelConverter.TaskManager.Controllers
             }
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateProcessStatus()
+        {
+            return new OkObjectResult("Hello");
+        }
+
         private string GetProcessIdFromReuquestParam()
         {
             var processId = Request.Query["processId"];

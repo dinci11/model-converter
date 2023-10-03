@@ -53,7 +53,7 @@ namespace ModelConverter.TaskManager.Models
 
         private void IsProcessResultFinished(ConverterServiceResponse response)
         {
-            if (response.ProcessResult == ProcessResult.Failed)
+            if (response.ProcessResult == ProcessStartResult.Failed)
             {
                 throw new Exception($"Process with id: {ProcessId} failed. Message: {response.FailingResult}");
             }
