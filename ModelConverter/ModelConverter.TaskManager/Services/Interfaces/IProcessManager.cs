@@ -1,7 +1,9 @@
-﻿namespace ModelConverter.TaskManager.Services.Interfaces
+﻿using ModelConverter.TaskManager.Enums;
+
+namespace ModelConverter.TaskManager.Services.Interfaces
 {
     public interface IProcessManager
     {
-        Task<string> StarConverting(string inputFilePath);
+        Task StarConverting(string processId, string inputFilePath, TargetFormat targetFormat);
     }
 }

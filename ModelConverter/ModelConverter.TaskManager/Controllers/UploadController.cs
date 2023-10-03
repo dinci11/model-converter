@@ -23,14 +23,14 @@ namespace ModelConverter.TaskManager.Controllers
         {
             try
             {
-                var request = GetRequestFromForm<UploadRequest>();
+                var request = await GetRequestFromForm<UploadRequest>();
                 var file = GetFileFromRequest();
 
-                ValidateRequest(await request);
+                ValidateRequest(request);
 
-                var inputFilePath = await _fileManager.SaveFile(await file);
+                var savedFilePath = await _fileManager.SaveFile(await file);
 
-                await _processManager.StarConverting(inputFilePath);
+                await _processManager.StarConverting(_processIdProvider.ProcessId, savedFilePath, request.TargetFormat.Value);
 
                 var response = new UploadResponse
                 {
@@ -49,7 +49,7 @@ namespace ModelConverter.TaskManager.Controllers
 
         private void ValidateRequest(UploadRequest request)
         {
-            if (request.targetFormat is null)
+            if (request.TargetFormat is null)
             {
                 throw new Exception("targetFormat should be specified");
             }

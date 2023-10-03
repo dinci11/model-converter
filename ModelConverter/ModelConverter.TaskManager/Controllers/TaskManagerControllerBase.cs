@@ -14,32 +14,14 @@ namespace ModelConverter.TaskManager.Controllers
             this.logger = logger;
         }
 
-        protected async Task<TRequest> GetRequestFromBodyT<TRequest>() where TRequest : class
-        {
-            var jsonString = string.Empty;
-            using (var reader = new StreamReader(Request.Body))
-            {
-                jsonString = await reader.ReadToEndAsync();
-            }
-            ValidateString(jsonString);
-            return SerializeStringToTRequest<TRequest>(jsonString);
-        }
-
         protected async Task<TRequest> GetRequestFromForm<TRequest>() where TRequest : class
         {
             var formRequest = Request.Form["request"];
             ValidateString(formRequest);
-            return await SerializeBodyToTRequest<TRequest>();
+            return DeserializeStringToTRequest<TRequest>(formRequest);
         }
 
-        private async Task<TRequest> SerializeBodyToTRequest<TRequest>() where TRequest : class
-        {
-            var requestT = await JsonSerializer.DeserializeAsync<TRequest>(Request.Body);
-            IsRequestNotNull(requestT);
-            return requestT;
-        }
-
-        private TRequest SerializeStringToTRequest<TRequest>(string jsonString) where TRequest : class
+        private TRequest DeserializeStringToTRequest<TRequest>(string jsonString) where TRequest : class
         {
             var requestT = JsonSerializer.Deserialize<TRequest>(jsonString);
             IsRequestNotNull(requestT);
@@ -61,7 +43,6 @@ namespace ModelConverter.TaskManager.Controllers
             return requestFile;
         }
 
-
         private void ValidateString(string stringValue)
         {
             if (StringIsNullOrEmpty(stringValue))
@@ -82,7 +63,6 @@ namespace ModelConverter.TaskManager.Controllers
             {
                 throw new Exception("There is no file in the request");
             }
-            throw new NotImplementedException();
         }
 
         private void IsFileSupported(IFormFile requestFile)

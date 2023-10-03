@@ -3,9 +3,12 @@ using System.Text.Json.Serialization;
 
 namespace ModelConverter.TaskManager.DTOs
 {
-    public class UploadRequest
+    public class ConverterServiceRequest
     {
+        public string InputPath { get; set; }
+        public string OutputPath { get; set; }
+
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        public TargetFormat? TargetFormat { get; set; }
+        public TargetFormat TargetFormat { get; set; }
     }
 }

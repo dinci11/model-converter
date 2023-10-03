@@ -1,4 +1,5 @@
-﻿using ModelConverter.TaskManager.Services;
+﻿using ModelConverter.TaskManager.Models;
+using ModelConverter.TaskManager.Services;
 using ModelConverter.TaskManager.Services.Interfaces;
 
 namespace ModelConverter.TaskManager
@@ -20,6 +21,7 @@ namespace ModelConverter.TaskManager
             services.AddScoped<IProcessIdProvider, ProcessIdProvider>();
             services.AddScoped<IFileManager, FileManager>();
             services.AddScoped<IProcessManager, ProcessManager>();
+            services.AddSingleton<IProcessRepository<ConvertingProcess>, ConvertingProcessRepository>();
         }
 
         public void Configure(IApplicationBuilder builder, IWebHostEnvironment environment)
