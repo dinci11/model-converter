@@ -1,4 +1,4 @@
-﻿using ModelConverter.TaskManager.Enums;
+﻿using ModelConverter.Common.Enums;
 
 namespace ModelConverter.TaskManager.Models
 {

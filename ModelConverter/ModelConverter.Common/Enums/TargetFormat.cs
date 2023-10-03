@@ -3,19 +3,17 @@ using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ModelConverter.Service.Enums
+namespace ModelConverter.Common.Enums
 {
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum ProcessStatus
+    public enum TargetFormat
     {
-        [EnumMember(Value = "finished")]
-        Finished,
-
-        [EnumMember(Value = "failed")]
-        Failed
+        Step,
+        Iges,
+        Stl,
+        Obj
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using ModelConverter.Emulator.Enums;
+using ModelConverter.Common.Enums;
 using ModelConverter.Emulator.Interfaces;
 using System;
 using System.Collections.Generic;

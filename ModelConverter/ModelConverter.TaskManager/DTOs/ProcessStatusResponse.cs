@@ -1,4 +1,4 @@
-﻿using ModelConverter.TaskManager.Enums;
+﻿using ModelConverter.Common.Enums;
 using System.Text.Json.Serialization;
 
 namespace ModelConverter.TaskManager.DTOs

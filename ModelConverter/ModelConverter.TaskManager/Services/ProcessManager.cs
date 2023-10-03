@@ -1,5 +1,5 @@
-﻿using ModelConverter.TaskManager.Constants;
-using ModelConverter.TaskManager.Enums;
+﻿using ModelConverter.Common.Enums;
+using ModelConverter.TaskManager.Constants;
 using ModelConverter.TaskManager.Models;
 using ModelConverter.TaskManager.Services.Interfaces;
 using System.Collections.Concurrent;

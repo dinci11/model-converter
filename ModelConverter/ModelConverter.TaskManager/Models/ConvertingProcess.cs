@@ -1,5 +1,5 @@
-﻿using ModelConverter.TaskManager.DTOs;
-using ModelConverter.TaskManager.Enums;
+﻿using ModelConverter.Common.Enums;
+using ModelConverter.TaskManager.DTOs;
 using ModelConverter.TaskManager.Services;
 using ModelConverter.TaskManager.Services.Interfaces;
 
@@ -19,7 +19,7 @@ namespace ModelConverter.TaskManager.Models
             InputPath = inputPath;
             OutputPath = outputPath;
             TargetFormat = targetFormat;
-            ProcessStatus = Enums.ProcessStatus.Waiting;
+            ProcessStatus = ProcessStatus.Waiting;
 
             _functionService = new FunctionService();
         }
@@ -28,20 +28,20 @@ namespace ModelConverter.TaskManager.Models
         {
             try
             {
-                ProcessStatus = Enums.ProcessStatus.InProgress;
                 var request = new ConverterServiceRequest()
                 {
                     InputPath = InputPath,
                     OutputPath = OutputPath,
                     TargetFormat = TargetFormat
                 };
+                ProcessStatus = ProcessStatus.InProgress;
                 var response = await _functionService.CallConverterService(request);
                 ValidateConverterResponse(response);
                 ProcessStatus = ProcessStatus.Completed;
             }
             catch (Exception ex)
             {
-                ProcessStatus = Enums.ProcessStatus.Failed;
+                ProcessStatus = ProcessStatus.Failed;
                 onFailure?.Invoke(ex);
             }
         }

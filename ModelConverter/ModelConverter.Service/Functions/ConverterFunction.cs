@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using ModelConverter.Common.Enums;
 using ModelConverter.Emulator.Interfaces;
 using ModelConverter.Service.Constants;
 using ModelConverter.Service.DTOs.Requestes;
@@ -47,11 +48,11 @@ namespace ModelConverter.Service.Functions
 
                 var newFile = await _converterService.Convert3DModelToNewFormat(modelConverterRequest.InputPath, modelConverterRequest.TargetFormat, modelConverterRequest.OutputPath);
 
-                return new OkObjectResult(new ModelConvertingResponse(Enums.ProcessStatus.Finished, newFile.FullName));
+                return new OkObjectResult(new ModelConvertingResponse(ProcessStatus.Completed, newFile.FullName));
             }
             catch (Exception ex)
             {
-                var errorResponse = new ObjectResult(new ModelConvertingResponse(Enums.ProcessStatus.Failed, failingResult: ex.Message));
+                var errorResponse = new ObjectResult(new ModelConvertingResponse(ProcessStatus.Failed, failingResult: ex.Message));
                 errorResponse.StatusCode = StatusCodes.Status422UnprocessableEntity;
 
                 return errorResponse;

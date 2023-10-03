@@ -1,4 +1,4 @@
-﻿using ModelConverter.Service.Enums;
+﻿using ModelConverter.Common.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;

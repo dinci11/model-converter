@@ -1,5 +1,4 @@
-﻿using ModelConverter.TaskManager.Enums;
-using ModelConverter.TaskManager.Models;
+﻿using ModelConverter.TaskManager.Models;
 
 namespace ModelConverter.TaskManager.Services.Interfaces
 {

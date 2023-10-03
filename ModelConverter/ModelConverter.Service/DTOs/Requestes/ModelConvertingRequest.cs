@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using ModelConverter.Emulator.Enums;
+using ModelConverter.Common.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

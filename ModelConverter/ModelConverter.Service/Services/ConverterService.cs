@@ -1,4 +1,4 @@
-﻿using ModelConverter.Emulator.Enums;
+﻿using ModelConverter.Common.Enums;
 using ModelConverter.Emulator.Interfaces;
 using ModelConverter.Service.Services.Interfaces;
 using System;
