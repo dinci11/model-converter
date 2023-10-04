@@ -60,7 +60,7 @@ namespace ModelConverter.Service.Functions
             }
             catch (Exception ex)
             {
-                return await _exceptionHandler.HandleException(ex);
+                return await _exceptionHandler.HandleExceptionAsync(ex);
             }
         }
 

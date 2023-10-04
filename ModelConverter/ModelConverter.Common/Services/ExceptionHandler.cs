@@ -108,7 +108,7 @@ namespace ModelConverter.Common.Services
             return response;
         }
 
-        public async Task<IActionResult> HandleException(Exception exception)
+        public async Task<IActionResult> HandleExceptionAsync(Exception exception)
         {
             var exceptionType = exception.GetType();
             _logger.LogInformation($"{exceptionType.Name} thrown by application!");

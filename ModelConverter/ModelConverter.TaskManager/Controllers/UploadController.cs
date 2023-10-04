@@ -51,7 +51,7 @@ namespace ModelConverter.TaskManager.Controllers
             catch (Exception ex)
             {
                 _logger.LogInformation($"Endpoint thrown Exception. ProcessId: {_processIdProvider.ProcessId} ");
-                return await _exceptionHandler.HandleException(ex);
+                return await _exceptionHandler.HandleExceptionAsync(ex);
             }
         }
 

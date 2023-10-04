@@ -43,7 +43,7 @@ namespace ModelConverter.TaskManager.Controllers
             catch (Exception ex)
             {
                 _logger.LogInformation($"GET Endpoint thrown an exception");
-                return await _exceptionHandler.HandleException(ex);
+                return await _exceptionHandler.HandleExceptionAsync(ex);
             }
         }
 
@@ -66,7 +66,7 @@ namespace ModelConverter.TaskManager.Controllers
             catch (Exception ex)
             {
                 _logger.LogInformation($"PUT Endpoint thrown an exception");
-                return await _exceptionHandler.HandleException(ex);
+                return await _exceptionHandler.HandleExceptionAsync(ex);
             }
         }
 

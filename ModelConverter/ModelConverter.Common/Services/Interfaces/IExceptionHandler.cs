@@ -9,6 +9,6 @@ namespace ModelConverter.Common.Services.Interfaces
 {
     public interface IExceptionHandler
     {
-        Task<IActionResult> HandleException(Exception exception);
+        Task<IActionResult> HandleExceptionAsync(Exception exception);
     }
 }
