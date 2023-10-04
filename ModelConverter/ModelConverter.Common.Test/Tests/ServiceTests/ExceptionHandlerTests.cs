@@ -26,7 +26,7 @@ namespace ModelConverter.Common.Test.Tests.ServiceTests
             new TestCaseData(new ValidationException("Some message"), new BadRequestObjectResult("Some message")),
             new TestCaseData(new ProcessFailedException("someProcessId","Some message"), new ObjectResult("Some message"){  StatusCode = 500}),
             new TestCaseData(new TestException(), new ObjectResult("Some message"){  StatusCode = 500}),
-            new TestCaseData(new Exception("Some message"), new ObjectResult("Some message"){  StatusCode = 500}),
+            new TestCaseData(new Exception("Some message"), new ObjectResult("Some message"){  StatusCode = 500})
         };
 
         [SetUp]
