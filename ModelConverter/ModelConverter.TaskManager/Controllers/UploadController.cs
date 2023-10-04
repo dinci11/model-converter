@@ -47,9 +47,7 @@ namespace ModelConverter.TaskManager.Controllers
             }
             catch (Exception ex)
             {
-                var response = new ObjectResult(ex.Message);
-                response.StatusCode = 500;
-                return response;
+                return await _exceptionHandler.HandleException(ex);
             }
         }
 

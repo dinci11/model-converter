@@ -14,19 +14,33 @@ namespace ModelConverter.Common.Extensions
     {
         public static async Task<T> GetObjectFromRequestBodyAsync<T>(this HttpRequest request) where T : class
         {
-            var requestT = await JsonSerializer.DeserializeAsync<T>(request.Body);
-            return requestT;
+            try
+            {
+                var requestT = await JsonSerializer.DeserializeAsync<T>(request.Body);
+                return requestT;
+            }
+            catch (JsonException ex)
+            {
+                throw new BadRequestException(ex.Message);
+            }
         }
 
         public static T GetObjectFromRequestForm<T>(this HttpRequest request) where T : class
         {
-            var requestJson = request.Form["body"];
-            if (string.IsNullOrEmpty(requestJson))
+            try
             {
-                throw new BadRequestException("Key: 'body' should be defined in the form");
+                var requestJson = request.Form["body"];
+                if (string.IsNullOrEmpty(requestJson))
+                {
+                    throw new BadRequestException("Key: 'body' should be defined in the form");
+                }
+                var requestT = JsonSerializer.Deserialize<T>(requestJson);
+                return requestT;
             }
-            var requestT = JsonSerializer.Deserialize<T>(requestJson);
-            return requestT;
+            catch (JsonException ex)
+            {
+                throw new BadRequestException(ex.Message);
+            }
         }
 
         public static IFormFile GetFileFromRequest(this HttpRequest request)
