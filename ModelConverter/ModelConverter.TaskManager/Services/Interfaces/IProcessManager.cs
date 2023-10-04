@@ -1,11 +1,14 @@
-﻿using ModelConverter.Common.Enums;
+﻿using ModelConverter.Common.DTOs.Requestes;
+using ModelConverter.Common.Enums;
 
 namespace ModelConverter.TaskManager.Services.Interfaces
 {
     public interface IProcessManager
     {
-        Task<ProcessStatus> GetProcessStatus(string processId);
+        Task<ProcessStatus> GetProcessStatusAsync(string processId);
 
-        Task StarConverting(string processId, string inputFilePath, TargetFormat targetFormat);
+        Task StarConvertingAsync(string processId, string inputFilePath, TargetFormat targetFormat);
+
+        Task UpdateProcessStatusAsync(StatusUpdateRequest updateRequest);
     }
 }

@@ -4,6 +4,6 @@ namespace ModelConverter.TaskManager.Services.Interfaces
 {
     public interface IFunctionService
     {
-        Task<ConverterServiceResponse> CallConverterService(ConverterServiceRequest request);
+        Task<ConverterServiceResponse> StartConverting(ConverterServiceRequest request);
     }
 }

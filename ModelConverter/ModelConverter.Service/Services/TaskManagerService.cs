@@ -30,7 +30,7 @@ namespace ModelConverter.Service.Services
                 Status = ProcessStatus.Completed
             };
 
-            _httpService.PutAsync(Routing.TaskManagerRoutes.STATUS_UPDATE_URL, request);
+            _httpService.PutAsync(Routing.TaskManagerRoutes.STATUS_URL, request);
         }
 
         public async Task MarkProcessFailedAsync(string processId)
@@ -41,7 +41,7 @@ namespace ModelConverter.Service.Services
                 Status = ProcessStatus.Failed,
                 OutputPath = string.Empty
             };
-            _httpService.PutAsync(Routing.TaskManagerRoutes.STATUS_UPDATE_URL, request);
+            _httpService.PutAsync(Routing.TaskManagerRoutes.STATUS_URL, request);
         }
     }
 }

@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
+using ModelConverter.Common.Constants;
+using ModelConverter.Common.Exceptions;
+using ModelConverter.Common.Extensions;
 using ModelConverter.TaskManager.DTOs;
 using ModelConverter.TaskManager.Services.Interfaces;
 
@@ -9,13 +13,15 @@ namespace ModelConverter.TaskManager.Controllers
         private readonly IFileManager _fileManager;
         private readonly IProcessManager _processManager;
         private readonly IProcessIdProvider _processIdProvider;
+        private readonly IValidator<UploadRequest> _validator;
 
-        public UploadController(ILogger<UploadController> logger, IFileManager fileManager, IProcessManager processManager, IProcessIdProvider processIdProvider)
+        public UploadController(ILogger<UploadController> logger, IFileManager fileManager, IProcessManager processManager, IProcessIdProvider processIdProvider, IValidator<UploadRequest> validator)
             : base(logger)
         {
             _fileManager = fileManager;
             _processManager = processManager;
             _processIdProvider = processIdProvider;
+            _validator = validator;
         }
 
         [HttpPost]
@@ -23,19 +29,20 @@ namespace ModelConverter.TaskManager.Controllers
         {
             try
             {
-                var request = await GetRequestFromForm<UploadRequest>();
+                var request = Request.GetObjectFromRequestForm<UploadRequest>();
+                ValidateUploadRequest(request);
                 var file = GetFileFromRequest();
 
                 ValidateRequest(request);
 
                 var savedFilePath = await _fileManager.SaveFile(await file);
 
-                await _processManager.StarConverting(_processIdProvider.ProcessId, savedFilePath, request.TargetFormat.Value);
+                await _processManager.StarConvertingAsync(_processIdProvider.ProcessId, savedFilePath, request.TargetFormat.Value);
 
                 var response = new UploadResponse
                 {
                     ProcessId = _processIdProvider.ProcessId,
-                    ProcessStatusUrl = $"http://localhost:5000/api/Status/{_processIdProvider.ProcessId}"
+                    ProcessStatusUrl = $"{Routing.TaskManagerRoutes.STATUS_URL}?processId={_processIdProvider.ProcessId}"
                 };
                 return new OkObjectResult(response);
             }
@@ -45,6 +52,15 @@ namespace ModelConverter.TaskManager.Controllers
                 response.StatusCode = 500;
                 return response;
             }
+        }
+
+        private void ValidateUploadRequest(UploadRequest request)
+        {
+            if (request is null)
+            {
+                throw new BadRequestException("Upload request was null");
+            }
+            _validator.ValidateAndThrow(request);
         }
 
         private void ValidateRequest(UploadRequest request)

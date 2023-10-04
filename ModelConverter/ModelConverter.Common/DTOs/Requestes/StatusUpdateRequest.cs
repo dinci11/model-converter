@@ -10,6 +10,6 @@ namespace ModelConverter.Common.DTOs.Requestes
     public class StatusUpdateRequest : ProcessRequestBase
     {
         public string OutputPath { get; set; }
-        public ProcessStatus Status { get; set; }
+        public ProcessStatus? Status { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace ModelConverter.Common.Constants
     {
         public class TaskManagerRoutes
         {
-            public const string STATUS_UPDATE_URL = "http://localhost:500/api/Status";
+            public const string STATUS_URL = "http://localhost:500/api/Status";
         }
     }
 }

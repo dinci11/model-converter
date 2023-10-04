@@ -34,8 +34,8 @@ namespace ModelConverter.TaskManager.Models
                     OutputPath = OutputPath,
                     TargetFormat = TargetFormat
                 };
+                var response = await _functionService.StartConverting(request);
                 ProcessStatus = ProcessStatus.InProgress;
-                var response = await _functionService.CallConverterService(request);
                 ValidateConverterResponse(response);
                 ProcessStatus = ProcessStatus.Completed;
             }
@@ -58,5 +58,19 @@ namespace ModelConverter.TaskManager.Models
                 throw new Exception($"Process with id: {ProcessId} failed. Message: {response.FailingResult}");
             }
         }
+
+        public void MarkAsInProgress()
+        {
+            ProcessStatus = ProcessStatus.InProgress;
+        }
+
+        public void MarkAsCompleted(string outputPath)
+        {
+            ProcessStatus = ProcessStatus.Completed;
+            OutputPath = outputPath;
+        }
+
+        public void MarkAsFailed()
+        { ProcessStatus = ProcessStatus.Failed; }
     }
 }

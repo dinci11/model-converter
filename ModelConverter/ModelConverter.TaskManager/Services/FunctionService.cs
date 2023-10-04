@@ -10,7 +10,7 @@ namespace ModelConverter.TaskManager.Services
     {
         private const string URL = "http://localhost:7093/api/Converter";
 
-        public async Task<ConverterServiceResponse> CallConverterService(ConverterServiceRequest request)
+        public async Task<ConverterServiceResponse> StartConverting(ConverterServiceRequest request)
         {
             using (var httpClient = new HttpClient())
             {

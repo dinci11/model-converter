@@ -16,6 +16,9 @@ using System.Text;
 using System.Threading.Tasks;
 using ModelConverter.Common.DTOs.Requestes;
 using ModelConverter.Common.Services.Interfaces;
+using FluentValidation;
+using ModelConverter.Common.Extensions;
+using ModelConverter.Common.Exceptions;
 
 namespace ModelConverter.Service.Functions
 {
@@ -24,19 +27,19 @@ namespace ModelConverter.Service.Functions
         private readonly IConverterService _converterService;
         private readonly ILogger<ConverterFunction> _logger;
         private readonly IRequestConverter _requestConverter;
-        private readonly IRequestValidator _requestValidator;
+        private readonly IValidator<ModelConvertingRequest> _validator;
         private readonly IExceptionHandler _exceptionHandler;
 
         public ConverterFunction(IConverterService converterService,
             ILogger<ConverterFunction> logger,
             IRequestConverter requestConverter,
-            IRequestValidator requestValidator,
+            IValidator<ModelConvertingRequest> validator,
             IExceptionHandler exceptionHandler)
         {
             _converterService = converterService;
             _logger = logger;
             _requestConverter = requestConverter;
-            _requestValidator = requestValidator;
+            _validator = validator;
             _exceptionHandler = exceptionHandler;
         }
 
@@ -46,9 +49,9 @@ namespace ModelConverter.Service.Functions
         {
             try
             {
-                var modelConverterRequest = _requestConverter.ConvertHttpRequest<ModelConvertingRequest>(request);
+                var modelConverterRequest = await request.GetObjectFromRequestBodyAsync<ModelConvertingRequest>();
 
-                _requestValidator.ValidateRequest(modelConverterRequest);
+                ValidateRequest(modelConverterRequest);
 
                 _ = _converterService.Convert3DModelToNewFormatAsync(modelConverterRequest);
 
@@ -62,6 +65,16 @@ namespace ModelConverter.Service.Functions
             {
                 return await _exceptionHandler.HandleException(ex);
             }
+        }
+
+        private void ValidateRequest(ModelConvertingRequest modelConverterRequest)
+        {
+            if (modelConverterRequest is null)
+            {
+                throw new BadRequestException("Body was null");
+            }
+
+            _validator.ValidateAndThrow(modelConverterRequest);
         }
     }
 }
