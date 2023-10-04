@@ -17,21 +17,22 @@ namespace ModelConverter.Service.Services
         private readonly IModelConverter _modelConverter;
         private readonly ITaskManagerService _taskManagerService;
 
-        public ConverterService(IModelConverter modelConverter)
+        public ConverterService(IModelConverter modelConverter, ITaskManagerService taskManagerService)
         {
             this._modelConverter = modelConverter;
+            _taskManagerService = taskManagerService;
         }
 
         public async Task Convert3DModelToNewFormatAsync(ModelConvertingRequest modelConvertingRequest)
         {
             try
             {
-                var newFile = await _modelConverter.Convert(modelConvertingRequest.InputPath, modelConvertingRequest.TargetFormat, modelConvertingRequest.OutputPath);
-                _taskManagerService.MarkProcessCompletedAsync(modelConvertingRequest.ProcessId, newFile);
+                var newFile = await _modelConverter.Convert(modelConvertingRequest.InputPath, modelConvertingRequest.TargetFormat.Value, modelConvertingRequest.OutputPath);
+                _ = _taskManagerService.MarkProcessCompletedAsync(modelConvertingRequest.ProcessId, newFile);
             }
             catch (Exception ex)
             {
-                _taskManagerService.MarkProcessFailedAsync(modelConvertingRequest.ProcessId);
+                _ = _taskManagerService.MarkProcessFailedAsync(modelConvertingRequest.ProcessId);
             }
         }
     }

@@ -10,7 +10,11 @@ namespace ModelConverter.Common.Constants
     {
         public class TaskManagerRoutes
         {
-            public const string STATUS_URL = "http://localhost:500/api/Status";
+            public const string STATUS_URL = "http://localhost:5000/api/Status";
+
+            public const string DOWNLOAD_ORIGINAL = "http://localhost:5000/api/Download/Original";
+
+            public const string DOWNLOAD_CONVERTED = "http://localhost:5000/api/Download/Converted";
         }
 
         public class ConverterFunction

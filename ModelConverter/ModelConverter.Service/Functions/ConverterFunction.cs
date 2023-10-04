@@ -26,19 +26,16 @@ namespace ModelConverter.Service.Functions
     {
         private readonly IConverterService _converterService;
         private readonly ILogger<ConverterFunction> _logger;
-        private readonly IRequestConverter _requestConverter;
         private readonly IValidator<ModelConvertingRequest> _validator;
         private readonly IExceptionHandler _exceptionHandler;
 
         public ConverterFunction(IConverterService converterService,
             ILogger<ConverterFunction> logger,
-            IRequestConverter requestConverter,
             IValidator<ModelConvertingRequest> validator,
             IExceptionHandler exceptionHandler)
         {
             _converterService = converterService;
             _logger = logger;
-            _requestConverter = requestConverter;
             _validator = validator;
             _exceptionHandler = exceptionHandler;
         }

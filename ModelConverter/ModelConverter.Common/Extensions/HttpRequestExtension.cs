@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using ModelConverter.Common.DTOs.Requestes;
 using ModelConverter.Common.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -11,18 +12,18 @@ namespace ModelConverter.Common.Extensions
 {
     public static class HttpRequestExtension
     {
-        public static async Task<T> GetObjectFromRequestBodyAsync<T>(this HttpRequest request)
+        public static async Task<T> GetObjectFromRequestBodyAsync<T>(this HttpRequest request) where T : class
         {
             var requestT = await JsonSerializer.DeserializeAsync<T>(request.Body);
             return requestT;
         }
 
-        public static T GetObjectFromRequestForm<T>(this HttpRequest request)
+        public static T GetObjectFromRequestForm<T>(this HttpRequest request) where T : class
         {
             var requestJson = request.Form["body"];
             if (string.IsNullOrEmpty(requestJson))
             {
-                throw new BadRequestException("Body should be defined in the form");
+                throw new BadRequestException("Key: 'body' should be defined in the form");
             }
             var requestT = JsonSerializer.Deserialize<T>(requestJson);
             return requestT;

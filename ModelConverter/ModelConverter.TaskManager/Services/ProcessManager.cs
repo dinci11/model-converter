@@ -1,5 +1,6 @@
 ﻿using ModelConverter.Common.DTOs.Requestes;
 using ModelConverter.Common.Enums;
+using ModelConverter.Common.Exceptions;
 using ModelConverter.TaskManager.Constants;
 using ModelConverter.TaskManager.Models;
 using ModelConverter.TaskManager.Services.Interfaces;
@@ -18,9 +19,19 @@ namespace ModelConverter.TaskManager.Services
             _repository = repository;
         }
 
+        public Task<ConvertingProcess> GetProcessAsync(string processId)
+        {
+            var process = _repository.GetProcessByIdAsync(processId);
+            if (process == null)
+            {
+                throw new NotFoundException($"Process with id: {processId} not found");
+            }
+            return process;
+        }
+
         public async Task<ProcessStatus> GetProcessStatusAsync(string processId)
         {
-            var process = await _repository.GetProcessAsync(processId);
+            var process = await _repository.GetProcessByIdAsync(processId);
             return process.ProcessStatus;
         }
 

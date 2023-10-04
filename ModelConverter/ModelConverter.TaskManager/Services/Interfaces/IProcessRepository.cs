@@ -7,7 +7,7 @@ namespace ModelConverter.TaskManager.Services.Interfaces
     {
         Task ScheduleProcess(T process);
 
-        Task<T> GetProcessAsync(string processId);
+        Task<T> GetProcessByIdAsync(string processId);
 
         Task UpdateStatusAsync(string processId, ProcessStatus status, string outputPath);
     }

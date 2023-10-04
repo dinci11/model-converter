@@ -14,6 +14,6 @@ namespace ModelConverter.Common.DTOs.Requestes
         public string OutputPath { get; set; }
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        public TargetFormat TargetFormat { get; set; }
+        public TargetFormat? TargetFormat { get; set; }
     }
 }

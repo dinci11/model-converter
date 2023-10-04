@@ -30,11 +30,12 @@ namespace ModelConverter.Service
                 loggingBuilder.AddConsole();
             });
             builder.Services.AddScoped<IConverterService, ConverterService>();
-            builder.Services.AddScoped<IRequestConverter, RequestConverter>();
             builder.Services.AddScoped<IRequestValidator, RequestValidator>();
             builder.Services.AddScoped<IValidator<ModelConvertingRequest>, ModelConvertingRequestValidator>();
             builder.Services.AddScoped<IValidator<StatusUpdateRequest>, StatusUpdateRequestValidator>();
             builder.Services.AddScoped<IExceptionHandler, ExceptionHandler>();
+            builder.Services.AddScoped<ITaskManagerService, TaskManagerService>();
+            builder.Services.AddScoped<IHttpService, HttpService>();
             builder.RegisterEmulator();
         }
     }

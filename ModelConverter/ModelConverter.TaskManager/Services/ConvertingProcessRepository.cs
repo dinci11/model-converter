@@ -27,7 +27,7 @@ namespace ModelConverter.TaskManager.Services
             });
         }
 
-        public async Task<ConvertingProcess> GetProcessAsync(string processId)
+        public async Task<ConvertingProcess> GetProcessByIdAsync(string processId)
         {
             var process = await Task.Run(() =>
             {
@@ -44,7 +44,7 @@ namespace ModelConverter.TaskManager.Services
 
         public async Task UpdateStatusAsync(string processId, ProcessStatus status, string outputPath = "")
         {
-            var process = await GetProcessAsync(processId);
+            var process = await GetProcessByIdAsync(processId);
 
             switch (status)
             {

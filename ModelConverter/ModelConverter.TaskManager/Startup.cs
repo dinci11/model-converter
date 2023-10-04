@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
+using ModelConverter.Common.DTOs.Requestes;
 using ModelConverter.Common.Services;
 using ModelConverter.Common.Services.Interfaces;
+using ModelConverter.Common.Validators;
 using ModelConverter.TaskManager.DTOs;
 using ModelConverter.TaskManager.Models;
 using ModelConverter.TaskManager.Services;
@@ -28,6 +30,7 @@ namespace ModelConverter.TaskManager
             services.AddScoped<IProcessManager, ProcessManager>();
             services.AddSingleton<IProcessRepository<ConvertingProcess>, ConvertingProcessRepository>();
             services.AddScoped<IValidator<UploadRequest>, UploadRequestValidator>();
+            services.AddScoped<IValidator<StatusUpdateRequest>, StatusUpdateRequestValidator>();
             services.AddScoped<IExceptionHandler, ExceptionHandler>();
         }
 

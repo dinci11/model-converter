@@ -23,12 +23,9 @@ namespace ModelConverter.TaskManager.Services
 
         public async Task<ModelConvertingResponse> StartConverting(ModelConvertingRequest request)
         {
-            using (var httpClient = new HttpClient())
-            {
-                var response = await _httpService.PostAsync(Routing.ConverterFunction.CONVERT_URL, request);
-                var converterResponse = await response.GetObjectFromResponseBody<ModelConvertingResponse>();
-                return converterResponse;
-            }
+            var response = await _httpService.PostAsync(Routing.ConverterFunction.CONVERT_URL, request);
+            var converterResponse = await response.GetObjectFromResponseBody<ModelConvertingResponse>();
+            return converterResponse;
         }
 
         private async Task<T> DeserializeResponse<T>(HttpResponseMessage response)

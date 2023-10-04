@@ -19,8 +19,8 @@ namespace ModelConverter.Common.Validators
                 .WithMessage("Status must be declared!");
 
             RuleFor(request => request.OutputPath)
-                .NotEmpty()
-                .WithMessage("OutputPath must be declared!");
+                .NotEmpty().When(request => request.Status is ProcessStatus.Completed)
+                .WithMessage("OutputPath must be declared when status is Completed!");
 
             RuleFor(request => request.ProcessId)
                 .NotEmpty()
