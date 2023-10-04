@@ -1,4 +1,7 @@
-﻿using ModelConverter.Common.Enums;
+﻿using ModelConverter.Common.DTOs.Requestes;
+using ModelConverter.Common.DTOs.Responses;
+using ModelConverter.Common.Enums;
+using ModelConverter.Common.Exceptions;
 using ModelConverter.TaskManager.DTOs;
 using ModelConverter.TaskManager.Services;
 using ModelConverter.TaskManager.Services.Interfaces;
@@ -24,38 +27,38 @@ namespace ModelConverter.TaskManager.Models
             _functionService = new FunctionService();
         }
 
-        public override async Task Run(Action<Exception> onFailure = null)
+        public override async Task Run(Action<Exception> onFailure)
         {
             try
             {
-                var request = new ConverterServiceRequest()
+                var request = new ModelConvertingRequest()
                 {
+                    ProcessId = ProcessId,
                     InputPath = InputPath,
                     OutputPath = OutputPath,
                     TargetFormat = TargetFormat
                 };
                 var response = await _functionService.StartConverting(request);
-                ProcessStatus = ProcessStatus.InProgress;
                 ValidateConverterResponse(response);
-                ProcessStatus = ProcessStatus.Completed;
+                ProcessStatus = ProcessStatus.InProgress;
             }
             catch (Exception ex)
             {
                 ProcessStatus = ProcessStatus.Failed;
-                onFailure?.Invoke(ex);
+                onFailure.Invoke(ex);
             }
         }
 
-        private void ValidateConverterResponse(ConverterServiceResponse response)
+        private void ValidateConverterResponse(ModelConvertingResponse response)
         {
             IsProcessResultFinished(response);
         }
 
-        private void IsProcessResultFinished(ConverterServiceResponse response)
+        private void IsProcessResultFinished(ModelConvertingResponse response)
         {
-            if (response.ProcessResult == ProcessStartResult.Failed)
+            if (response.ProcessStartResult == ProcessStartResult.Failed)
             {
-                throw new Exception($"Process with id: {ProcessId} failed. Message: {response.FailingResult}");
+                throw new Exception($"Process with id: {ProcessId} failed to start.");
             }
         }
 

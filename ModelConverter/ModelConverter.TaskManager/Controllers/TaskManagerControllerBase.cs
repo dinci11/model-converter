@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ModelConverter.Common.Services.Interfaces;
+using ModelConverter.TaskManager.Services.Interfaces;
 using System.Text.Json;
 
 namespace ModelConverter.TaskManager.Controllers
@@ -8,10 +10,14 @@ namespace ModelConverter.TaskManager.Controllers
     public abstract class TaskManagerControllerBase : ControllerBase
     {
         protected ILogger<UploadController> logger;
+        protected readonly IExceptionHandler _exceptionHandler;
+        protected readonly IProcessManager _processManager;
 
-        protected TaskManagerControllerBase(ILogger<UploadController> logger)
+        protected TaskManagerControllerBase(ILogger<UploadController> logger, IExceptionHandler exceptionHandler, IProcessManager processManager)
         {
             this.logger = logger;
+            _exceptionHandler = exceptionHandler;
+            _processManager = processManager;
         }
 
         protected async Task<TRequest> GetRequestFromForm<TRequest>() where TRequest : class

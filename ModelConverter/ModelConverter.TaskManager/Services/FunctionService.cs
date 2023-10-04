@@ -1,4 +1,10 @@
-﻿using ModelConverter.TaskManager.DTOs;
+﻿using ModelConverter.Common.Constants;
+using ModelConverter.Common.DTOs.Requestes;
+using ModelConverter.Common.DTOs.Responses;
+using ModelConverter.Common.Extensions;
+using ModelConverter.Common.Services;
+using ModelConverter.Common.Services.Interfaces;
+using ModelConverter.TaskManager.DTOs;
 using ModelConverter.TaskManager.Services.Interfaces;
 using System.Text;
 using System.Text.Json;
@@ -8,17 +14,19 @@ namespace ModelConverter.TaskManager.Services
 {
     public class FunctionService : IFunctionService
     {
-        private const string URL = "http://localhost:7093/api/Converter";
+        private IHttpService _httpService;
 
-        public async Task<ConverterServiceResponse> StartConverting(ConverterServiceRequest request)
+        public FunctionService()
+        {
+            _httpService = new HttpService();
+        }
+
+        public async Task<ModelConvertingResponse> StartConverting(ModelConvertingRequest request)
         {
             using (var httpClient = new HttpClient())
             {
-                var jsonBody = JsonSerializer.Serialize(request);
-                var jsonContent = new StringContent(jsonBody, Encoding.UTF8, "application/json");
-                var response = await httpClient.PostAsync(URL, jsonContent);
-                ValidateResponse(response);
-                var converterResponse = await DeserializeResponse<ConverterServiceResponse>(response);
+                var response = await _httpService.PostAsync(Routing.ConverterFunction.CONVERT_URL, request);
+                var converterResponse = await response.GetObjectFromResponseBody<ModelConvertingResponse>();
                 return converterResponse;
             }
         }

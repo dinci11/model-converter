@@ -9,6 +9,8 @@ namespace ModelConverter.Common.Services.Interfaces
 {
     public interface IHttpService
     {
+        Task<HttpResponseMessage> PostAsync(string cONVERT_URL, ModelConvertingRequest request);
+
         Task<HttpResponseMessage> PutAsync(string url, ProcessRequestBase request);
     }
 }

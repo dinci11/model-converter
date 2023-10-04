@@ -12,5 +12,10 @@ namespace ModelConverter.Common.Constants
         {
             public const string STATUS_URL = "http://localhost:500/api/Status";
         }
+
+        public class ConverterFunction
+        {
+            public const string CONVERT_URL = "http://localhost:7093/api/Converter";
+        }
     }
 }

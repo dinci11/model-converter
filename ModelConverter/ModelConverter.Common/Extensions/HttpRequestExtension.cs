@@ -28,6 +28,15 @@ namespace ModelConverter.Common.Extensions
             return requestT;
         }
 
+        public static IFormFile GetFileFromRequest(this HttpRequest request)
+        {
+            if (request.Form.Files.Count != 1)
+            {
+                throw new BadRequestException("Request should contain exactl one file");
+            }
+            return request.Form.Files.FirstOrDefault();
+        }
+
         public static string GetRequestParam(this HttpRequest request, string parameterName)
         {
             return request.Query[parameterName];

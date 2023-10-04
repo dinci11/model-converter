@@ -13,16 +13,12 @@ namespace ModelConverter.TaskManager.Controllers
 {
     public class StatusController : TaskManagerControllerBase
     {
-        private readonly IProcessManager _processManager;
         private readonly IValidator<StatusUpdateRequest> _statusUpdateRequestValidator;
-        private readonly IExceptionHandler _exceptionHandler;
 
         public StatusController(ILogger<UploadController> logger, IProcessManager processManager, IValidator<StatusUpdateRequest> statusUpdateRequestValidator, IExceptionHandler exceptionHandler)
-            : base(logger)
+            : base(logger, exceptionHandler, processManager)
         {
-            _processManager = processManager;
             _statusUpdateRequestValidator = statusUpdateRequestValidator;
-            _exceptionHandler = exceptionHandler;
         }
 
         [HttpGet]

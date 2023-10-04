@@ -1,6 +1,11 @@
-﻿using ModelConverter.TaskManager.Models;
+﻿using FluentValidation;
+using ModelConverter.Common.Services;
+using ModelConverter.Common.Services.Interfaces;
+using ModelConverter.TaskManager.DTOs;
+using ModelConverter.TaskManager.Models;
 using ModelConverter.TaskManager.Services;
 using ModelConverter.TaskManager.Services.Interfaces;
+using ModelConverter.TaskManager.Validators;
 
 namespace ModelConverter.TaskManager
 {
@@ -22,6 +27,8 @@ namespace ModelConverter.TaskManager
             services.AddScoped<IFileManager, FileManager>();
             services.AddScoped<IProcessManager, ProcessManager>();
             services.AddSingleton<IProcessRepository<ConvertingProcess>, ConvertingProcessRepository>();
+            services.AddScoped<IValidator<UploadRequest>, UploadRequestValidator>();
+            services.AddScoped<IExceptionHandler, ExceptionHandler>();
         }
 
         public void Configure(IApplicationBuilder builder, IWebHostEnvironment environment)
