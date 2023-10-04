@@ -1,0 +1,208 @@
+{
+	"info": {
+		"_postman_id": "8638eab0-0fb5-487b-85b9-3cf0cec40366",
+		"name": "ModelConverter",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7023614"
+	},
+	"item": [
+		{
+			"name": "TaskManager",
+			"item": [
+				{
+					"name": "Upload",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseJson = pm.response.json();\r",
+									"var processId = responseJson.processId;\r",
+									"pm.globals.set(\"LastStartedProcessId\", processId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "body",
+									"value": "{\n    \"TargetFormat\" : \"stl\"\n}",
+									"type": "text"
+								},
+								{
+									"key": "",
+									"type": "file",
+									"src": "/C:/Users/deel01/Private/Shapr3D/TestFiles/Test2.shapr"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{WebApiBaseUrl}}{{API path}}/Upload",
+							"host": [
+								"{{WebApiBaseUrl}}{{API path}}"
+							],
+							"path": [
+								"Upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Status of last process",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{WebApiBaseUrl}}{{API path}}/Status?processId={{LastStartedProcessId}}",
+							"host": [
+								"{{WebApiBaseUrl}}{{API path}}"
+							],
+							"path": [
+								"Status"
+							],
+							"query": [
+								{
+									"key": "processId",
+									"value": "{{LastStartedProcessId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{WebApiBaseUrl}}{{API path}}/Status?processId=1f317f01-2973-4bd6-b351-f784ba0a4f26",
+							"host": [
+								"{{WebApiBaseUrl}}{{API path}}"
+							],
+							"path": [
+								"Status"
+							],
+							"query": [
+								{
+									"key": "processId",
+									"value": "1f317f01-2973-4bd6-b351-f784ba0a4f26"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Status",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"OutputPath\" : \"valami\",\r\n    \"ProcessId\" : \"valami\",\r\n    \"Status\" : \"Completed\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{WebApiBaseUrl}}{{API path}}/Status",
+							"host": [
+								"{{WebApiBaseUrl}}{{API path}}"
+							],
+							"path": [
+								"Status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{WebApiBaseUrl}}{{API path}}/Download/GetUrl?processId={{LastStartedProcessId}}",
+							"host": [
+								"{{WebApiBaseUrl}}{{API path}}"
+							],
+							"path": [
+								"Download",
+								"GetUrl"
+							],
+							"query": [
+								{
+									"key": "processId",
+									"value": "{{LastStartedProcessId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Functions",
+			"item": [
+				{
+					"name": "Converter",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"InputPath\" : \"C:/Users/deel01/Private/Shapr3D/Input/Test2.shapr\",\r\n    \"OutputPath\" : \"C:/Users/deel01/Private/Shapr3D/Output\",\r\n    \"TargetFormat\" : \"stl\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AzureFunctionBaseUrl}}{{API path}}/Converter",
+							"host": [
+								"{{AzureFunctionBaseUrl}}{{API path}}"
+							],
+							"path": [
+								"Converter"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
