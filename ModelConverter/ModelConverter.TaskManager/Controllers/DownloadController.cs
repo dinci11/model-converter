@@ -25,19 +25,26 @@ namespace ModelConverter.TaskManager.Controllers
         {
             try
             {
+                _logger.LogInformation($"GetUrl Endpoint invoked.");
+
                 var processId = GetProcessIdFromRequest();
                 var process = await _processManager.GetProcessAsync(processId);
+
                 CheckProcessStatus(process);
+
                 var response = new DownloadResponse
                 {
                     ProcessId = processId,
                     OriginalFileUrl = $"{Routing.TaskManagerRoutes.DOWNLOAD_ORIGINAL}?processId={processId}",
                     ConvertedFileUrl = $"{Routing.TaskManagerRoutes.DOWNLOAD_CONVERTED}?processId={processId}"
                 };
+
+                _logger.LogInformation($"Endpoint finished");
                 return new OkObjectResult(response);
             }
             catch (Exception ex)
             {
+                _logger.LogInformation($"GetUrl Endpoint thrown an exception");
                 return await _exceptionHandler.HandleException(ex);
             }
         }
@@ -48,10 +55,38 @@ namespace ModelConverter.TaskManager.Controllers
         {
             try
             {
-                return await GetFile(FileVersion.Converted);
+                _logger.LogInformation($"GetOriginal Endpoint invoked.");
+
+                var response = await GetFile(FileVersion.Original);
+
+                _logger.LogInformation($"GetOriginal Endpoint finished.");
+
+                return response;
             }
             catch (Exception ex)
             {
+                _logger.LogInformation($"GetOriginal Endpoint thrown an exception.");
+                return await _exceptionHandler.HandleException(ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("Converted")]
+        public async Task<IActionResult> GetConvertedFile()
+        {
+            try
+            {
+                _logger.LogInformation($"GetConverted Endpoint invoked.");
+
+                var response = await GetFile(FileVersion.Converted);
+
+                _logger.LogInformation($"GetConverted Endpoint finished.");
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"GetConverted Endpoint thrown an exception.");
                 return await _exceptionHandler.HandleException(ex);
             }
         }
@@ -66,31 +101,17 @@ namespace ModelConverter.TaskManager.Controllers
             return PhysicalFile(filePath, "application/octet-stream");
         }
 
-        [HttpGet]
-        [Route("Converted")]
-        public async Task<IActionResult> GetConvertedFile()
-        {
-            try
-            {
-                return await GetFile(FileVersion.Converted);
-            }
-            catch (Exception ex)
-            {
-                return await _exceptionHandler.HandleException(ex);
-            }
-        }
-
         private string GetFilePath(string filePath)
         {
             var fileInfo = new FileInfo(filePath);
-            if (FileNotExists(fileInfo))
+            if (IsFileNotExists(fileInfo))
             {
                 throw new NotFoundException($"File {fileInfo.Name} not found");
             }
             return fileInfo.FullName;
         }
 
-        private bool FileNotExists(FileInfo fileInfo) => !fileInfo.Exists;
+        private bool IsFileNotExists(FileInfo fileInfo) => !fileInfo.Exists;
 
         private static void CheckProcessStatus(ConvertingProcess process)
         {

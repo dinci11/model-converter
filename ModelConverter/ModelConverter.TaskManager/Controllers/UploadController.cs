@@ -28,6 +28,7 @@ namespace ModelConverter.TaskManager.Controllers
         {
             try
             {
+                _logger.LogInformation($"Endpoint invoked. ProcessId: {_processIdProvider.ProcessId} ");
                 var request = Request.GetObjectFromRequestForm<UploadRequest>();
                 ValidateUploadRequest(request);
                 var file = Request.GetFileFromRequest();
@@ -36,6 +37,7 @@ namespace ModelConverter.TaskManager.Controllers
 
                 var savedFilePath = await _fileManager.SaveFile(file);
 
+                _logger.LogInformation($"Start converting. ProcessId: {_processIdProvider.ProcessId} ");
                 await _processManager.StarConvertingAsync(_processIdProvider.ProcessId, savedFilePath, request.TargetFormat.Value);
 
                 var response = new UploadResponse
@@ -43,10 +45,12 @@ namespace ModelConverter.TaskManager.Controllers
                     ProcessId = _processIdProvider.ProcessId,
                     ProcessStatusUrl = $"{Routing.TaskManagerRoutes.STATUS_URL}?processId={_processIdProvider.ProcessId}"
                 };
+                _logger.LogInformation($"Endpoint finished. ProcessId: {_processIdProvider.ProcessId} ");
                 return new OkObjectResult(response);
             }
             catch (Exception ex)
             {
+                _logger.LogInformation($"Endpoint thrown Exception. ProcessId: {_processIdProvider.ProcessId} ");
                 return await _exceptionHandler.HandleException(ex);
             }
         }

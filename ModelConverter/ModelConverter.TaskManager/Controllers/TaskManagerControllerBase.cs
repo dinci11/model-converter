@@ -9,13 +9,13 @@ namespace ModelConverter.TaskManager.Controllers
     [ApiController]
     public abstract class TaskManagerControllerBase : ControllerBase
     {
-        protected ILogger<UploadController> logger;
+        protected ILogger<UploadController> _logger;
         protected readonly IExceptionHandler _exceptionHandler;
         protected readonly IProcessManager _processManager;
 
         protected TaskManagerControllerBase(ILogger<UploadController> logger, IExceptionHandler exceptionHandler, IProcessManager processManager)
         {
-            this.logger = logger;
+            this._logger = logger;
             _exceptionHandler = exceptionHandler;
             _processManager = processManager;
         }

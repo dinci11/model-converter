@@ -7,6 +7,7 @@ using ModelConverter.Common.Exceptions;
 using ModelConverter.Common.Extensions;
 using ModelConverter.Common.Services.Interfaces;
 using ModelConverter.TaskManager.DTOs;
+using ModelConverter.TaskManager.Services;
 using ModelConverter.TaskManager.Services.Interfaces;
 
 namespace ModelConverter.TaskManager.Controllers
@@ -26,10 +27,13 @@ namespace ModelConverter.TaskManager.Controllers
         {
             try
             {
+                _logger.LogInformation($"GET Endpoint invoked.");
                 var processId = GetProcessIdFromReuquestParam();
 
+                _logger.LogInformation($"Retrieving process status. ProcessId: {processId}");
                 var processStatus = await _processManager.GetProcessStatusAsync(processId);
 
+                _logger.LogInformation($"GET Endpoint finished");
                 return new OkObjectResult(new ProcessStatusResponse
                 {
                     ProcessId = processId,
@@ -38,6 +42,7 @@ namespace ModelConverter.TaskManager.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogInformation($"GET Endpoint thrown an exception");
                 return await _exceptionHandler.HandleException(ex);
             }
         }
@@ -47,13 +52,20 @@ namespace ModelConverter.TaskManager.Controllers
         {
             try
             {
+                _logger.LogInformation($"PUT Endpoint invoked.");
                 var updateRequest = await Request.GetObjectFromRequestBodyAsync<StatusUpdateRequest>();
+
                 ValidateRequest(updateRequest);
+
+                _logger.LogInformation($"Update process status. ProcessId: {updateRequest.ProcessId}");
                 await _processManager.UpdateProcessStatusAsync(updateRequest);
+
+                _logger.LogInformation($"Endpoint finished");
                 return new OkObjectResult("Updated");
             }
             catch (Exception ex)
             {
+                _logger.LogInformation($"PUT Endpoint thrown an exception");
                 return await _exceptionHandler.HandleException(ex);
             }
         }
