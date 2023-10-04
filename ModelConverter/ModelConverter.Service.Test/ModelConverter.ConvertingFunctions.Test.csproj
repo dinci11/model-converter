@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ModelConverter.Service\ModelConverter.Service.csproj" />
+    <ProjectReference Include="..\ModelConverter.Service\ModelConverter.ConvertingFunctions.csproj" />
   </ItemGroup>
 
 </Project>

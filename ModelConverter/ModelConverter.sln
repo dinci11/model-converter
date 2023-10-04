@@ -5,15 +5,15 @@ VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelConverter.Emulator", "ModelConverter.Emulator\ModelConverter.Emulator.csproj", "{ACD924EA-AC81-4C91-AE33-85C0B1E0D4AC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelConverter.Service", "ModelConverter.Service\ModelConverter.Service.csproj", "{FA56BE63-01D6-4AAD-BDAA-535EB2EB75D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelConverter.ConvertingFunctions", "ModelConverter.Service\ModelConverter.ConvertingFunctions.csproj", "{FA56BE63-01D6-4AAD-BDAA-535EB2EB75D0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelConverter.TaskManager", "ModelConverter.TaskManager\ModelConverter.TaskManager.csproj", "{92CA4771-25C6-477C-8055-60F084C64EAF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelConverter.Common", "ModelConverter.Common\ModelConverter.Common.csproj", "{23288A91-6491-48FB-955D-143C6A027EDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelConverter.Common.Test", "ModelConverter.Common.Test\ModelConverter.Common.Test.csproj", "{C7796143-7E28-405C-9142-D90538168912}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelConverter.Common.Test", "ModelConverter.Common.Test\ModelConverter.Common.Test.csproj", "{C7796143-7E28-405C-9142-D90538168912}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelConverter.Service.Test", "ModelConverter.Service.Test\ModelConverter.Service.Test.csproj", "{372ABFCC-BB81-46BC-A1B1-0D949D7E65C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelConverter.ConvertingFunctions.Test", "ModelConverter.Service.Test\ModelConverter.ConvertingFunctions.Test.csproj", "{372ABFCC-BB81-46BC-A1B1-0D949D7E65C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,30 @@
+{
+	"id": "0bd73d68-044a-4307-856f-628f48ebb6b2",
+	"values": [
+		{
+			"key": "AzureFunctionBaseUrl",
+			"value": "http://localhost:7093",
+			"enabled": true
+		},
+		{
+			"key": "API path",
+			"value": "/api",
+			"enabled": true
+		},
+		{
+			"key": "WebApiBaseUrl",
+			"value": "http://localhost:5000",
+			"enabled": true
+		},
+		{
+			"key": "LastStartedProcessId",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"name": "Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2023-10-04T22:30:58.712Z",
+	"_postman_exported_using": "Postman/10.18.11"
+}
