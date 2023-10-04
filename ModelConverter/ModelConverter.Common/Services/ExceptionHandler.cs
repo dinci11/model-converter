@@ -31,73 +31,45 @@ namespace ModelConverter.Common.Services
 
         private async Task<IActionResult> HandleValidationException(Exception exception)
         {
-            try
+            var validationException = exception as ValidationException;
+            var response = new BadRequestObjectResult(new
             {
-                var validationException = exception as ValidationException;
-                var response = new BadRequestObjectResult(new
-                {
-                    message = validationException.Message,
-                });
+                message = validationException.Message,
+            });
 
-                return response;
-            }
-            catch (Exception ex)
-            {
-                return await HandleDefaultException(ex);
-            }
+            return response;
         }
 
         private async Task<IActionResult> HandleProcessFailedException(Exception exception)
         {
-            try
+            var processFailedException = exception as ProcessFailedException;
+            var response = new ObjectResult(new
             {
-                var processFailedException = exception as ProcessFailedException;
-                var response = new ObjectResult(new
-                {
-                    processId = processFailedException.ProcessId,
-                    message = processFailedException.Message
-                });
+                processId = processFailedException.ProcessId,
+                message = processFailedException.Message
+            });
 
-                return response;
-            }
-            catch (Exception ex)
-            {
-                return await HandleDefaultException(ex);
-            }
+            return response;
         }
 
         private async Task<IActionResult> HandleBadRequestException(Exception exception)
         {
-            try
+            var badRequestException = exception as BadRequestException;
+            var response = new BadRequestObjectResult(new
             {
-                var badRequestException = exception as BadRequestException;
-                var response = new BadRequestObjectResult(new
-                {
-                    message = badRequestException.Message
-                });
+                message = badRequestException.Message
+            });
 
-                return response;
-            }
-            catch (Exception ex)
-            {
-                return await HandleDefaultException(ex);
-            }
+            return response;
         }
 
         private async Task<IActionResult> HandleNotFoundException(Exception ex)
         {
-            try
+            var notFoundException = ex as NotFoundException;
+            return new NotFoundObjectResult(new
             {
-                var notFoundException = ex as NotFoundException;
-                return new NotFoundObjectResult(new
-                {
-                    message = notFoundException.Message
-                });
-            }
-            catch (Exception)
-            {
-                return await HandleDefaultException(ex);
-            }
+                message = notFoundException.Message
+            });
         }
 
         private async Task<IActionResult> HandleDefaultException(Exception exception)
@@ -114,8 +86,15 @@ namespace ModelConverter.Common.Services
             _logger.LogInformation($"{exceptionType.Name} thrown by application!");
             if (IsThereHandlerForException(exceptionType))
             {
-                _logger.LogInformation($"Exception can be handled by registred handler");
-                return await _exceptionHandlers[exceptionType].Invoke(exception);
+                try
+                {
+                    _logger.LogInformation($"Exception can be handled by registred handler");
+                    return await _exceptionHandlers[exceptionType].Invoke(exception);
+                }
+                catch
+                {
+                    return await HandleDefaultException(exception);
+                }
             }
             else
             {
